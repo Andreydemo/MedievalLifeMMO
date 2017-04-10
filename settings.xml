@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<settings xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd'
+          xmlns='http://maven.apache.org/SETTINGS/1.0.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+    <profiles>
+        <profile>
+            <repositories>
+                <repository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>bintray-demosoft-MMO</id>
+                    <name>bintray</name>
+                    <url>http://demosoft.bintray.com/MMO</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>bintray-demosoft-MMO</id>
+                    <name>bintray-plugins</name>
+                    <url>http://demosoft.bintray.com/MMO</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <id>bintray</id>
+        </profile>
+
+        <profile>
+            <id>myMavenRepo</id>
+            <activation>
+                <property>
+                    <name>externalMavenRepo</name>
+                </property>
+            </activation>
+            <properties>
+                <myMavenRepo.read.url>https://mymavenrepo.com/repo/QuwKSgvfxYuAb89jEXA9/</myMavenRepo.read.url>
+                <myMavenRepo.write.url>https://mymavenrepo.com/repo/J9KwnHlIfIPLaH4RMCA8/</myMavenRepo.write.url>
+            </properties>
+            <repositories>
+                <repository>
+                    <id>myMavenRepo.read</id>
+                    <url>${myMavenRepo.read.url}</url>
+                </repository>
+            </repositories>
+        </profile>
+
+    </profiles>
+    <activeProfiles>
+        <activeProfile>bintray</activeProfile>
+        <activeProfile>myMavenRepo</activeProfile>
+    </activeProfiles>
+
+
+</settings>
