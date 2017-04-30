@@ -2,6 +2,7 @@ package org.demosoft.medieval.life.loginserver;
 
 import com.l2jserver.mmocore.MMOConnection;
 import com.l2jserver.mmocore.MMOClient;
+import com.l2jserver.mmocore.SendablePacket;
 import lombok.Getter;
 import lombok.Setter;
 import org.demosoft.medieval.life.loginserver.crypt.LoginCrypt;
@@ -11,6 +12,7 @@ import org.demosoft.medieval.life.loginserver.serverpackets.LoginFail;
 import org.demosoft.medieval.life.loginserver.serverpackets.PlayFail;
 import org.demosoft.medieval.life.util.Rnd;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.logging.Logger;
@@ -70,13 +72,47 @@ public class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>> {
     }
 
     @Override
-    public boolean decrypt(ByteBuffer byteBuffer, int i) {
-        return false;
+    public boolean decrypt(ByteBuffer buf, int size)
+    {
+        boolean ret = false;
+        try
+        {
+            ret = loginCrypt.decrypt(buf.array(), buf.position(), size);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            super.getConnection().close((SendablePacket<L2LoginClient>) null);
+            return false;
+        }
+
+        if (!ret)
+        {
+            byte[] dump = new byte[size];
+            System.arraycopy(buf.array(), buf.position(), dump, 0, size);
+            log.warn("Wrong checksum from client: " + toString());
+            super.getConnection().close((SendablePacket<L2LoginClient>) null);
+        }
+
+        return ret;
     }
 
     @Override
-    public boolean encrypt(ByteBuffer byteBuffer, int i) {
-        return false;
+    public boolean encrypt(ByteBuffer buf, int size)
+    {
+        final int offset = buf.position();
+        try
+        {
+            size = loginCrypt.encrypt(buf.array(), offset, size);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+
+        buf.position(offset + size);
+        return true;
     }
 
     @Override

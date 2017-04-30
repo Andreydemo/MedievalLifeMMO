@@ -19,6 +19,7 @@
 package org.demosoft.medieval.life.loginserver.serverpackets;
 
 
+import org.apache.log4j.Logger;
 import org.demosoft.medieval.life.loginserver.L2LoginClient;
 
 /**
@@ -27,6 +28,8 @@ import org.demosoft.medieval.life.loginserver.L2LoginClient;
 public final class Init extends L2LoginServerPacket
 {
 	private final int _sessionId;
+
+	private  static Logger log = Logger.getLogger(Init.class);
 	
 	private final byte[] _publicKey;
 	private final byte[] _blowfishKey;
@@ -47,7 +50,7 @@ public final class Init extends L2LoginServerPacket
 	protected void write()
 	{
 		writeC(0x00); // init packet id
-		
+		log.debug("Init new connection; SessionId:" + _sessionId);
 		writeD(_sessionId); // session id
 		writeD(0x0000c621); // protocol revision
 		

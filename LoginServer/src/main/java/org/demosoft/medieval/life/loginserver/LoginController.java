@@ -23,7 +23,9 @@ import javolution.util.FastSet;
 import org.apache.commons.logging.Log;
 import org.demosoft.medieval.life.loginserver.crypt.ScrambledKeyPair;
 import org.demosoft.medieval.life.util.Rnd;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.crypto.Cipher;
 import java.net.InetAddress;
 import java.security.GeneralSecurityException;
@@ -42,6 +44,7 @@ import java.util.logging.Logger;
  *
  * @version $Revision: 1.7.4.3 $ $Date: 2005/03/27 15:30:09 $
  */
+@Component
 public class LoginController {
     protected static final Logger _log = Logger.getLogger(LoginController.class.getName());
 
@@ -68,6 +71,7 @@ public class LoginController {
     protected byte[][] _blowfishKeys;
     private static final int BLOWFISH_KEYS = 20;
 
+    @PostConstruct
     public static void load() throws GeneralSecurityException {
         if (_instance == null) {
             _instance = new LoginController();
