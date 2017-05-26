@@ -74,8 +74,8 @@ public class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>> {
     @Override
     public boolean decrypt(ByteBuffer buf, int size)
     {
-        boolean ret = false;
-        try
+        boolean ret = true;
+        /*try
         {
             ret = loginCrypt.decrypt(buf.array(), buf.position(), size);
         }
@@ -84,7 +84,7 @@ public class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>> {
             e.printStackTrace();
             super.getConnection().close((SendablePacket<L2LoginClient>) null);
             return false;
-        }
+        }*/
 
         if (!ret)
         {
@@ -101,7 +101,7 @@ public class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>> {
     public boolean encrypt(ByteBuffer buf, int size)
     {
         final int offset = buf.position();
-        try
+        /*try
         {
             size = loginCrypt.encrypt(buf.array(), offset, size);
         }
@@ -109,7 +109,7 @@ public class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>> {
         {
             e.printStackTrace();
             return false;
-        }
+        }*/
 
         buf.position(offset + size);
         return true;
