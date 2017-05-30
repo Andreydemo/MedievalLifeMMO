@@ -73,18 +73,19 @@ public class RequestAuthLogin extends L2LoginClientPacket {
     @Override
     public void run() {
         byte[] decrypted = null;
-        try {
+       /* try {
             Cipher rsaCipher = Cipher.getInstance("RSA/ECB/nopadding");
             rsaCipher.init(Cipher.DECRYPT_MODE, getClient().getRSAPrivateKey());
             decrypted = rsaCipher.doFinal(_raw, 0x00, 0x80);
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
             return;
-        }
+        }*/
+            decrypted= _raw;
 
-        _user = new String(decrypted, 0x5E, 14).trim();
+        _user = new String(decrypted, 91, 14).trim();
         _user = _user.toLowerCase();
-        _password = new String(decrypted, 0x6C, 16).trim();
+        _password = new String(decrypted, 105, 16).trim();
         _ncotp = decrypted[0x7c];
         _ncotp |= decrypted[0x7d] << 8;
         _ncotp |= decrypted[0x7e] << 16;
